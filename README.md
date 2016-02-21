@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.github.fcannizzaro:material-icons:0.1.0'
+    compile 'com.github.fcannizzaro:material-icons:0.1.1'
 }
 ```
 
@@ -29,20 +29,25 @@ dependencies {
     <dependency>
         <groupId>com.github.fcannizzaro</groupId>
         <artifactId>material-icons</artifactId>
-        <version>0.1.0</version>
+        <version>0.1.1</version>
     </dependency>
 </dependencies>
 ```
 
 ###  Download JAR
-[Release 0.1.0](https://github.com/fcannizzaro/material-icons/releases/tag/0.1.0)
+[Release 0.1.1](https://github.com/fcannizzaro/material-icons/releases/tag/0.1.1)
 
 ## Usage
 ```java
-BufferedImage home =  new IconMaterial("home")   // name icon
-                          .color(Color.BLUE)       // optional, default : black
-                          .size(32)                // optional, int pixel
+// as BufferedImage
+BufferedImage home =  new IconMaterial("home")
+                          .color(Color.BLUE)     // optional, default : black
+                          .size(32)              // optional, int pixel
                           .icon();
+// as ImageIcon
+ImageIcon icon = new IconMaterial("public")
+                     .size(32)
+                     .imageIcon();
 ```
 
 ## Screenshot
