@@ -68,6 +68,10 @@ public class IconMaterial {
         return new ImageIcon(icon());
     }
 
+    public ImageIcon imageIcon(int width, int height, Color color){
+		return new ImageIcon(this.icon.color(color).icon().getScaledInstance(width, height, Image.SCALE_DEFAULT));
+	}
+    
     /**
      * Create a BufferedImage and apply size/color
      */
