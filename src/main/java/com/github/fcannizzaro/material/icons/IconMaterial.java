@@ -20,11 +20,11 @@ public class IconMaterial {
 	 * @param size    icon size
 	 */
 	public IconMaterial(IconSet iconSet, String name, IconSize size) {
+		final String iconPath = getIconPath(iconSet, name, size.getSizeDp());
 		try {
-			// for jar packaging
-			icon = ImageIO.read(getClass().getResource(getIconPath(iconSet, name, size.getSizeDp())));
+			icon = ImageIO.read(getClass().getResource(iconPath));
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println(String.format("Failed to load icon '%s'", iconPath));
 		}
 	}
 
@@ -65,22 +65,34 @@ public class IconMaterial {
 	}
 
 	public enum IconSet {
-		Action,
-		Alert,
-		Av,
-		Communication,
-		Content,
-		Device,
-		Editor,
-		File,
-		Hardware,
-		Image,
-		Maps,
-		Navigation,
-		Notification,
-		Places,
-		Social,
-		Toggle
+		Action("action"),
+		Alert("alert"),
+		Av("av"),
+		Communication("communication"),
+		Content("content"),
+		Device("device"),
+		Editor("editor"),
+		File("file"),
+		Hardware("hardware"),
+		Image("image"),
+		Maps("maps"),
+		Navigation("navigation"),
+		Notification("notification"),
+		Places("places"),
+		Social("social"),
+		Toggle("toggle");
+		private final String folder;
+
+		/**
+		 * @param folder where icons of this set are located
+		 */
+		IconSet(String folder) {
+			this.folder = folder;
+		}
+
+		public String getFolder() {
+			return folder;
+		}
 	}
 
 	/**
@@ -91,8 +103,8 @@ public class IconMaterial {
 	 */
 	String getIconPath(IconSet iconSet, String name, int sizeDp) {
 		return String.format(
-				"/res/material-design-icons-master/%s/1x_web/%s_black_%ddp.png",
-				iconSet.toString().toLowerCase(),
+				"/res/material-design-icons-master/%s/1x_web/%s_black_%sdp.png",
+				iconSet.getFolder(),
 				name.replaceAll(" ", "_"),
 				sizeDp
 		);
