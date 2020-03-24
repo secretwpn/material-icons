@@ -69,7 +69,7 @@ public class IconMaterial {
     }
 
     public ImageIcon imageIcon(int width, int height, Color color){
-		return new ImageIcon(this.icon.color(color).icon().getScaledInstance(width, height, Image.SCALE_DEFAULT));
+		return new ImageIcon(this.color(color).icon().getScaledInstance(width, height, Image.SCALE_DEFAULT));
 	}
     
     /**
