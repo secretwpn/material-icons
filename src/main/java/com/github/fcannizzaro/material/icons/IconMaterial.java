@@ -13,6 +13,7 @@ public class IconMaterial {
 
 	private BufferedImage icon;
 	private Color color;
+	private double angle;
 
 	/**
 	 * @param iconSet icon set defines a subfolder / category e.g. Action, Communication
@@ -28,20 +29,64 @@ public class IconMaterial {
 		}
 	}
 
+	private static BufferedImage rotate(BufferedImage srcImg, double angle) {
+		int w = srcImg.getWidth();
+		int h = srcImg.getHeight();
+
+		BufferedImage dstImg = new BufferedImage(w, h, srcImg.getType());
+		Graphics2D g2d = dstImg.createGraphics();
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g2d.rotate(Math.toRadians(angle), w / 2.0, h / 2.0);
+		g2d.drawImage(srcImg, null, 0, 0);
+		g2d.dispose();
+		return dstImg;
+	}
+
 	public static ImageIcon dp18(IconSet iconSet, String name, Color color) {
 		return new IconMaterial(iconSet, name, IconSize.dp18).color(color).imageIcon();
+	}
+
+	public static ImageIcon dp18(IconSet iconSet, String name, Color color, double angle) {
+		return new IconMaterial(iconSet, name, IconSize.dp18).color(color).rotation(angle).imageIcon();
 	}
 
 	public static ImageIcon dp24(IconSet iconSet, String name, Color color) {
 		return new IconMaterial(iconSet, name, IconSize.dp24).color(color).imageIcon();
 	}
 
+	public static ImageIcon dp24(IconSet iconSet, String name, Color color, double angle) {
+		return new IconMaterial(iconSet, name, IconSize.dp24).color(color).rotation(angle).imageIcon();
+	}
+
 	public static ImageIcon dp36(IconSet iconSet, String name, Color color) {
 		return new IconMaterial(iconSet, name, IconSize.dp36).color(color).imageIcon();
 	}
 
+	public static ImageIcon dp36(IconSet iconSet, String name, Color color, double angle) {
+		return new IconMaterial(iconSet, name, IconSize.dp36).color(color).rotation(angle).imageIcon();
+	}
+
 	public static ImageIcon dp48(IconSet iconSet, String name, Color color) {
 		return new IconMaterial(iconSet, name, IconSize.dp48).color(color).imageIcon();
+	}
+
+	public static ImageIcon dp48(IconSet iconSet, String name, Color color, double angle) {
+		return new IconMaterial(iconSet, name, IconSize.dp48).color(color).rotation(angle).imageIcon();
+	}
+
+	/**
+	 * @param iconSet icon set defines a subfolder / category e.g. Action, Communication
+	 * @param name    icon name. Both ways "move_to_inbox" or "move to inbox" are supported
+	 * @param sizeDp  size in dp (device-independent pixels)
+	 * @return path to image created from input parameters
+	 */
+	public static String getIconPath(IconSet iconSet, String name, int sizeDp) {
+		return String.format(
+				"/res/material-design-icons-master/%s/1x_web/ic_%s_black_%ddp.png",
+				iconSet.getFolder(),
+				name.replaceAll(" ", "_"),
+				sizeDp
+		);
 	}
 
 	public enum IconSize {
@@ -95,26 +140,13 @@ public class IconMaterial {
 		}
 	}
 
-	/**
-	 * @param iconSet icon set defines a subfolder / category e.g. Action, Communication
-	 * @param name    icon name. Both ways "move_to_inbox" or "move to inbox" are supported
-	 * @param sizeDp  size in dp (device-independent pixels)
-	 * @return path to image created from input parameters
-	 */
-	public static String getIconPath(IconSet iconSet, String name, int sizeDp) {
-		return String.format(
-				"/res/material-design-icons-master/%s/1x_web/ic_%s_black_%ddp.png",
-				iconSet.getFolder(),
-				name.replaceAll(" ", "_"),
-				sizeDp
-		);
-	}
-
-	/**
-	 * set color
-	 */
 	public IconMaterial color(Color color) {
 		this.color = color;
+		return this;
+	}
+
+	public IconMaterial rotation(double angle) {
+		this.angle = angle;
 		return this;
 	}
 
@@ -131,6 +163,8 @@ public class IconMaterial {
 	public BufferedImage icon() {
 		if (color != null)
 			icon = TintUtils.color(icon, color);
+		if (Double.compare(angle, 0) != 0)
+			icon = rotate(icon, angle);
 		return icon;
 	}
 }
