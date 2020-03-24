@@ -101,9 +101,9 @@ public class IconMaterial {
 	 * @param sizeDp  size in dp (device-independent pixels)
 	 * @return path to image created from input parameters
 	 */
-	String getIconPath(IconSet iconSet, String name, int sizeDp) {
+	public static String getIconPath(IconSet iconSet, String name, int sizeDp) {
 		return String.format(
-				"/res/material-design-icons-master/%s/1x_web/%s_black_%sdp.png",
+				"/res/material-design-icons-master/%s/1x_web/ic_%s_black_%ddp.png",
 				iconSet.getFolder(),
 				name.replaceAll(" ", "_"),
 				sizeDp
