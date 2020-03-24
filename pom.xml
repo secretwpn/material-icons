@@ -53,12 +53,4 @@
         </plugins>
     </build>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.github.coobird</groupId>
-            <artifactId>thumbnailator</artifactId>
-            <version>0.4.11</version>
-        </dependency>
-    </dependencies>
-
 </project>

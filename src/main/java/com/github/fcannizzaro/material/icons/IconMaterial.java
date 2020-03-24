@@ -1,7 +1,6 @@
 package com.github.fcannizzaro.material.icons;
 
 import com.github.fcannizzaro.material.icons.util.TintUtils;
-import net.coobird.thumbnailator.Thumbnails;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -12,78 +11,114 @@ import java.io.IOException;
 @SuppressWarnings("unused")
 public class IconMaterial {
 
-    private BufferedImage icon;
-    private Color color;
-    private int size;
+	private BufferedImage icon;
+	private Color color;
 
-    public IconMaterial(String name) {
-        try {
-            // for jar packaging
-            icon = ImageIO.read(getClass().getResource("/res/" + name.replaceAll(" ", "_") + ".png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * choose icon
-     */
-    public IconMaterial name(int size) {
-        this.size = size;
-        return this;
-    }
-
-
-    /**
-     * set size of icon
-     */
-    public IconMaterial size(int size) {
-        this.size = size;
-        return this;
-    }
-
-    /**
-     * resize icon
-     */
-    private void resize() {
-        try {
-            icon = Thumbnails.of(icon).size(size, size).asBufferedImage();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * set color
-     */
-    public IconMaterial color(Color color) {
-        this.color = color;
-        return this;
-    }
-
-    /**
-     * create an ImageIcon
-     */
-    public ImageIcon imageIcon() {
-        return new ImageIcon(icon());
-    }
-
-    public ImageIcon imageIcon(int width, int height, Color color){
-		return new ImageIcon(this.color(color).icon().getScaledInstance(width, height, Image.SCALE_DEFAULT));
+	/**
+	 * @param iconSet icon set defines a subfolder / category e.g. Action, Communication
+	 * @param name    icon name. Both ways "move_to_inbox" or "move to inbox" are supported
+	 * @param size    icon size
+	 */
+	public IconMaterial(IconSet iconSet, String name, IconSize size) {
+		try {
+			// for jar packaging
+			icon = ImageIO.read(getClass().getResource(getIconPath(iconSet, name, size.getSizeDp())));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
-    
-    /**
-     * Create a BufferedImage and apply size/color
-     */
-    public BufferedImage icon() {
 
-        if (size != 0)
-            resize();
+	public static ImageIcon dp18(IconSet iconSet, String name, Color color) {
+		return new IconMaterial(iconSet, name, IconSize.dp18).color(color).imageIcon();
+	}
 
-        if (color != null)
-            icon = TintUtils.color(icon, color);
+	public static ImageIcon dp24(IconSet iconSet, String name, Color color) {
+		return new IconMaterial(iconSet, name, IconSize.dp24).color(color).imageIcon();
+	}
 
-        return icon;
+	public static ImageIcon dp36(IconSet iconSet, String name, Color color) {
+		return new IconMaterial(iconSet, name, IconSize.dp36).color(color).imageIcon();
+	}
 
-    }
+	public static ImageIcon dp48(IconSet iconSet, String name, Color color) {
+		return new IconMaterial(iconSet, name, IconSize.dp48).color(color).imageIcon();
+	}
+
+	public enum IconSize {
+		dp18(18),
+		dp24(24),
+		dp36(36),
+		dp48(48);
+
+		private final int sizeDp;
+
+		/**
+		 * @param sizeDp size in dp (device-independent pixels)
+		 */
+		IconSize(int sizeDp) {
+			this.sizeDp = sizeDp;
+		}
+
+		public int getSizeDp() {
+			return sizeDp;
+		}
+	}
+
+	public enum IconSet {
+		Action,
+		Alert,
+		Av,
+		Communication,
+		Content,
+		Device,
+		Editor,
+		File,
+		Hardware,
+		Image,
+		Maps,
+		Navigation,
+		Notification,
+		Places,
+		Social,
+		Toggle
+	}
+
+	/**
+	 * @param iconSet icon set defines a subfolder / category e.g. Action, Communication
+	 * @param name    icon name. Both ways "move_to_inbox" or "move to inbox" are supported
+	 * @param sizeDp  size in dp (device-independent pixels)
+	 * @return path to image created from input parameters
+	 */
+	String getIconPath(IconSet iconSet, String name, int sizeDp) {
+		return String.format(
+				"/res/material-design-icons-master/%s/1x_web/%s_black_%ddp.png",
+				iconSet.toString().toLowerCase(),
+				name.replaceAll(" ", "_"),
+				sizeDp
+		);
+	}
+
+	/**
+	 * set color
+	 */
+	public IconMaterial color(Color color) {
+		this.color = color;
+		return this;
+	}
+
+	/**
+	 * create an ImageIcon
+	 */
+	public ImageIcon imageIcon() {
+		return new ImageIcon(icon());
+	}
+
+	/**
+	 * Create a BufferedImage and apply size/color
+	 */
+	public BufferedImage icon() {
+		if (color != null)
+			icon = TintUtils.color(icon, color);
+		return icon;
+	}
 }
